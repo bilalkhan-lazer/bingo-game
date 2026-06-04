@@ -1,0 +1,10 @@
+{
+  "name": "bingo-game",
+  "version": "1.0.0",
+  "description": "Multiplayer real-time bingo game",
+  "private": true,
+  "dependencies": {
+    "@upstash/redis": "^1.28.0",
+    "ably": "^2.3.0"
+  }
+}
