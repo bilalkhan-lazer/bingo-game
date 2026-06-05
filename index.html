@@ -53,18 +53,19 @@
     .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 7px 14px; background: var(--surface2); border-radius: 8px; font-size: 0.82rem; margin-bottom: 14px; color: var(--text-muted); }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--col-n); box-shadow: 0 0 6px var(--col-n); animation: pulse 2s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    .game-id-hero { text-align: center; margin-bottom: 14px; }
     .game-id-hero-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 6px; }
     .game-id-hero-value { font-family: monospace; font-size: 2.4rem; font-weight: 900; color: var(--free); letter-spacing: 6px; background: var(--surface2); padding: 12px 24px; border-radius: 12px; border: 2px solid var(--border); display: inline-block; }
     .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 650px) { .admin-grid { grid-template-columns: 1fr; } }
-    .ball { width: 90px; height: 90px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 -4px 12px rgba(0,0,0,0.3), inset 0 4px 12px rgba(255,255,255,0.2); }
+    /* Ball — overflow:visible so animation doesn't get clipped */
+    .ball { width: 90px; height: 90px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 -4px 12px rgba(0,0,0,0.3), inset 0 4px 12px rgba(255,255,255,0.2); overflow: hidden; }
     .ball.animate { animation: ballDrop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
     @keyframes ballDrop { 0% { transform: translateY(-60px) scale(0.5); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
-    .ball-letter { font-size: 0.75rem; letter-spacing: 2px; opacity: 0.85; }
-    .ball-number { font-size: 2rem; line-height: 1; }
+    .ball-letter { letter-spacing: 2px; opacity: 0.85; line-height: 1; }
+    .ball-number { line-height: 1; }
     .ball-empty { width: 90px; height: 90px; border-radius: 50%; border: 3px dashed var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; }
-    .ball-display { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px; }
+    /* overflow:visible so ball animation doesn't get clipped by parent */
+    .ball-display { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px; overflow: visible; }
     .ball-col-b { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
     .ball-col-i { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; }
     .ball-col-n { background: linear-gradient(135deg, #22c55e, #15803d); color: #fff; }
@@ -123,7 +124,8 @@
     .error-msg { color: #f87171; font-size: 0.88rem; margin-top: 6px; min-height: 18px; }
     .numbers-remaining { text-align: center; color: var(--text-muted); font-size: 0.82rem; }
     .last-drawn-label { text-align: center; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
-    .player-view-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    /* overflow:visible so animated ball doesn't clip into bingo card */
+    .player-view-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; overflow: visible; }
     .player-name-display { font-size: 1.05rem; font-weight: 700; color: var(--text); }
     .game-id-badge { font-size: 0.78rem; color: var(--text-muted); font-family: monospace; }
     hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
@@ -146,6 +148,7 @@
   <div class="winner-box">
     <span class="winner-trophy">🏆</span>
     <div class="winner-title">BINGO!</div>
+    <div id="winner-place-display" style="font-size:1.3rem;font-weight:800;color:var(--free);margin-bottom:6px;"></div>
     <div class="winner-name-overlay" id="winner-name-display">Someone won!</div>
     <div class="winner-continue-note">The game continues — keep playing!</div>
     <button class="btn btn-ghost" onclick="closeWinner()">Keep Playing</button>
@@ -233,9 +236,11 @@
           <div class="player-name-display" id="player-name-display">Player</div>
           <div class="game-id-badge" id="player-game-id-badge"></div>
         </div>
-        <div style="text-align:right;">
+        <div style="text-align:right;overflow:visible;">
           <div class="last-drawn-label">Last Drawn</div>
-          <div id="player-ball-container" style="margin-top:6px;"><div class="ball-empty" style="width:60px;height:60px;font-size:0.7rem;">—</div></div>
+          <div id="player-ball-container" style="margin-top:6px;overflow:visible;">
+            <div class="ball-empty" style="width:60px;height:60px;font-size:0.7rem;">—</div>
+          </div>
         </div>
       </div>
       <div id="player-cards-container"></div>
@@ -255,7 +260,7 @@ function getColLetter(n) { return n<=15?'B':n<=30?'I':n<=45?'N':n<=60?'G':'O'; }
 function showView(name) {
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
-  state.view = name;
+  state.view=name;
   document.getElementById('players-sidebar').classList.toggle('visible', name==='admin'||name==='player');
 }
 
@@ -289,7 +294,10 @@ function renderSidebar(players) {
   const winnerSet=new Set((state.winners||[]).map(w=>w.playerKey));
   list.innerHTML=keys.map(k=>{
     const p=players[k],isWinner=winnerSet.has(k),cc=p.cardCount||(p.cards?p.cards.length:1);
-    return `<div class="sidebar-player ${isWinner?'is-winner':''}"><div class="sidebar-dot ${isWinner?'winner':''}"></div><span class="sidebar-player-name">${p.name}</span><span class="sidebar-player-cards">${cc>1?cc+'🃏 ':''}${isWinner?'🏆':''}</span></div>`;
+    const place=(state.winners||[]).findIndex(w=>w.playerKey===k);
+    const medals=['🥇','🥈','🥉'];
+    const medal=place>=0?(medals[place]||'🏅'):'';
+    return `<div class="sidebar-player ${isWinner?'is-winner':''}"><div class="sidebar-dot ${isWinner?'winner':''}"></div><span class="sidebar-player-name">${p.name}</span><span class="sidebar-player-cards">${cc>1?cc+'🃏 ':''}${medal}</span></div>`;
   }).join('');
 }
 
@@ -319,15 +327,21 @@ async function enterAdminView(gameId,adminKey) {
   document.getElementById('share-link-input').value=`${location.origin}/?game=${gameId}`;
   const gs=await apiFetch(`game-state?gameId=${gameId}`);
   state.drawnNumbers=gs.drawnNumbers||[];state.winner=gs.winner;state.winners=gs.winners||[];
+  state.lastWinnerCount=state.winners.length;
   renderAdminDrawnBoard();renderAdminWinners();renderSidebar(gs.players);updateDrawButton();
   const ch=await connectAbly(gameId,`admin-${gameId}`);
   ch.subscribe('game-update',(msg)=>{
     const d=msg.data;state.drawnNumbers=d.drawnNumbers;state.winner=d.winner;state.winners=d.winners||[];
-    renderAdminDrawnBoard();renderAdminWinners();updateDrawButton();updateBall('admin-ball-container',d.number,90);
-    if(d.winners&&d.winners.length>state.lastWinnerCount){showWinner(d.winners[d.winners.length-1].name);state.lastWinnerCount=d.winners.length;}
+    renderAdminDrawnBoard();renderAdminWinners();updateDrawButton();
+    updateBall('admin-ball-container',d.number,90);
+    if(d.winners&&d.winners.length>state.lastWinnerCount){
+      const newest=d.winners[d.winners.length-1];
+      showWinner(newest.name,d.winners.length-1);
+      state.lastWinnerCount=d.winners.length;
+    }
     apiFetch(`game-state?gameId=${gameId}`).then(g=>renderSidebar(g.players)).catch(()=>{});
   });
-  ch.subscribe('player-joined',(msg)=>{ renderSidebar(msg.data.players); });
+  ch.subscribe('player-joined',(msg)=>{renderSidebar(msg.data.players);});
   showView('admin');
 }
 
@@ -364,11 +378,16 @@ function updateDrawButton() {
   else{btn.disabled=false;btn.textContent='🎱 Draw Number';}
 }
 
+// Fixed: use px units so font sizes scale correctly with ball diameter
 function updateBall(containerId,number,size=90) {
-  if(!number)return;const l=getColLetter(number);
-  const ball=document.createElement('div');ball.className=`ball ball-col-${l.toLowerCase()} animate`;
+  if(!number)return;
+  const l=getColLetter(number);
+  const ball=document.createElement('div');
+  ball.className=`ball ball-col-${l.toLowerCase()} animate`;
   ball.style.width=size+'px';ball.style.height=size+'px';
-  ball.innerHTML=`<span class="ball-letter" style="font-size:${size*0.085}rem">${l}</span><span class="ball-number" style="font-size:${size*0.022}rem">${number}</span>`;
+  const letterPx=Math.round(size*0.15)+'px';
+  const numPx=Math.round(size*0.36)+'px';
+  ball.innerHTML=`<span class="ball-letter" style="font-size:${letterPx}">${l}</span><span class="ball-number" style="font-size:${numPx}">${number}</span>`;
   const c=document.getElementById(containerId);c.innerHTML='';c.appendChild(ball);
 }
 
@@ -392,6 +411,7 @@ async function enterPlayerView(gameId,playerName,cardCount=1) {
     state.gameId=gameId;state.playerName=playerName;state.playerKey=data.playerKey;
     state.cards=data.cards||(data.card?[data.card]:[]);
     state.drawnNumbers=data.drawnNumbers||[];state.winner=data.winner;state.winners=data.winners||[];
+    state.lastWinnerCount=state.winners.length;
     document.getElementById('player-name-display').textContent=playerName;
     document.getElementById('player-game-id-badge').textContent=`Game ID: ${gameId}`;
     document.getElementById('player-game-id-label').textContent=gameId;
@@ -399,12 +419,17 @@ async function enterPlayerView(gameId,playerName,cardCount=1) {
     const ch=await connectAbly(gameId,`player-${data.playerKey}`);
     ch.subscribe('game-update',(msg)=>{
       const d=msg.data;state.drawnNumbers=d.drawnNumbers;state.winner=d.winner;state.winners=d.winners||[];
-      updateBall('player-ball-container',d.number,60);markAllCards(d.drawnNumbers);renderPlayerHistory();
-      if(d.winners&&d.winners.length>state.lastWinnerCount){showWinner(d.winners[d.winners.length-1].name);state.lastWinnerCount=d.winners.length;}
+      updateBall('player-ball-container',d.number,60);
+      markAllCards(d.drawnNumbers);renderPlayerHistory();
+      if(d.winners&&d.winners.length>state.lastWinnerCount){
+        const newest=d.winners[d.winners.length-1];
+        showWinner(newest.name,d.winners.length-1);
+        state.lastWinnerCount=d.winners.length;
+      }
     });
     ch.subscribe('player-joined',(msg)=>{renderSidebar(msg.data.players);});
     apiFetch(`game-state?gameId=${gameId}`).then(gs=>renderSidebar(gs.players)).catch(()=>{});
-    if(state.winners.length)showWinner(state.winners[state.winners.length-1].name);
+    if(state.winners.length)showWinner(state.winners[state.winners.length-1].name,state.winners.length-1);
     showView('player');
   }catch(e){setError('join-error',e.message);}
 }
@@ -442,7 +467,14 @@ function renderPlayerHistory() {
   c.innerHTML=state.drawnNumbers.map(n=>`<span class="history-chip ${getColLetter(n)}">${getColLetter(n)}${n}</span>`).join('');
 }
 
-function showWinner(name){document.getElementById('winner-name-display').textContent=name+' got BINGO!';document.getElementById('winner-overlay').classList.add('show');spawnConfetti();}
+// Winner overlay — now shows place (1st, 2nd, 3rd...) and says game continues
+function showWinner(name,place) {
+  const placeLabels=['🥇 1st Place!','🥈 2nd Place!','🥉 3rd Place!','4th Place!','5th Place!','6th Place!','7th Place!','8th Place!','9th Place!','10th Place!'];
+  document.getElementById('winner-place-display').textContent=(place!=null)?(placeLabels[place]||`${place+1}th Place!`):'' ;
+  document.getElementById('winner-name-display').textContent=name+' got BINGO!';
+  document.getElementById('winner-overlay').classList.add('show');
+  spawnConfetti();
+}
 function closeWinner(){document.getElementById('winner-overlay').classList.remove('show');}
 function spawnConfetti(){
   const c=document.getElementById('confetti');c.innerHTML='';
@@ -463,7 +495,7 @@ function resetToHome() {
   const gameId=p.get('game'),adminKey=p.get('admin'),playerName=p.get('name');
   if(gameId&&adminKey) enterAdminView(gameId,adminKey);
   else if(gameId&&playerName) enterPlayerView(gameId,playerName,1);
-  else {
+  else{
     if(gameId) document.getElementById('join-game-id').value=gameId;
     showView('home');
   }
