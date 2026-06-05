@@ -12,115 +12,132 @@
       --text: #e8e8f0; --text-muted: #8888aa; --accent: #7c3aed; --accent-hover: #6d28d9;
       --col-b: #3b82f6; --col-i: #8b5cf6; --col-n: #22c55e; --col-g: #f97316; --col-o: #ef4444;
       --col-b-dim: #1e3a5f; --col-i-dim: #3b2167; --col-n-dim: #14532d; --col-g-dim: #7c2d12; --col-o-dim: #7f1d1d;
-      --free: #fbbf24; --marked: #fbbf24;
+      --free: #fbbf24; --marked: #fbbf24; --sidebar-w: 220px;
     }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-    .view { display: none; width: 100%; max-width: 900px; padding: 24px 16px; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    .page-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: var(--sidebar-w); min-height: 100vh; background: var(--surface); border-right: 1px solid var(--border); padding: 16px 12px; display: none; flex-direction: column; gap: 8px; position: sticky; top: 0; }
+    .sidebar.visible { display: flex; }
+    .sidebar-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; }
+    .sidebar-player { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); font-size: 0.85rem; }
+    .sidebar-player.is-winner { border-color: var(--free); }
+    .sidebar-player-name { font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sidebar-player-cards { font-size: 0.7rem; color: var(--text-muted); }
+    .sidebar-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--col-n); flex-shrink: 0; }
+    .sidebar-dot.winner { background: var(--free); box-shadow: 0 0 6px var(--free); }
+    .main-content { flex: 1; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+    .header { text-align: center; padding: 28px 16px 12px; width: 100%; }
+    .header h1 { font-size: 2.8rem; font-weight: 900; letter-spacing: -1px; background: linear-gradient(135deg, var(--col-b), var(--col-i), var(--col-n), var(--col-g), var(--col-o)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .header p { color: var(--text-muted); margin-top: 6px; font-size: 0.9rem; }
+    .view { display: none; width: 100%; max-width: 860px; padding: 16px 16px 40px; }
     .view.active { display: block; }
-    .header { text-align: center; padding: 32px 16px 16px; }
-    .header h1 { font-size: 3rem; font-weight: 900; letter-spacing: -1px; background: linear-gradient(135deg, var(--col-b), var(--col-i), var(--col-n), var(--col-g), var(--col-o)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .header p { color: var(--text-muted); margin-top: 8px; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 22px; border-radius: 10px; border: none; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
     .btn:active { transform: scale(0.97); }
     .btn-primary { background: var(--accent); color: #fff; }
     .btn-primary:hover { background: var(--accent-hover); }
     .btn-danger { background: #dc2626; color: #fff; }
     .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
     .btn-ghost:hover { background: var(--surface2); }
-    .btn-draw { width: 100%; padding: 18px; font-size: 1.3rem; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; border-radius: 14px; border: none; cursor: pointer; font-weight: 800; transition: all 0.2s; }
+    .btn-full { width: 100%; }
+    .btn-draw { width: 100%; padding: 16px; font-size: 1.2rem; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; border-radius: 14px; border: none; cursor: pointer; font-weight: 800; transition: all 0.2s; }
     .btn-draw:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,58,237,0.4); }
     .btn-draw:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-    .btn-full { width: 100%; }
-    .input { width: 100%; padding: 12px 16px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 1rem; margin-bottom: 12px; outline: none; transition: border-color 0.15s; }
+    .input { width: 100%; padding: 11px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 0.95rem; margin-bottom: 12px; outline: none; transition: border-color 0.15s; }
     .input:focus { border-color: var(--accent); }
     .input::placeholder { color: var(--text-muted); }
-    label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    #view-home { max-width: 480px; margin: 0 auto; }
-    .divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 20px 0; }
+    label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.85rem; margin: 18px 0; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .ball { width: 100px; height: 100px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 -4px 12px rgba(0,0,0,0.3), inset 0 4px 12px rgba(255,255,255,0.2); }
+    #view-home { max-width: 460px; margin: 0 auto; }
+    .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 7px 14px; background: var(--surface2); border-radius: 8px; font-size: 0.82rem; margin-bottom: 14px; color: var(--text-muted); }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--col-n); box-shadow: 0 0 6px var(--col-n); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .game-id-hero { text-align: center; margin-bottom: 14px; }
+    .game-id-hero-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 6px; }
+    .game-id-hero-value { font-family: monospace; font-size: 2.4rem; font-weight: 900; color: var(--free); letter-spacing: 6px; background: var(--surface2); padding: 12px 24px; border-radius: 12px; border: 2px solid var(--border); display: inline-block; }
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 650px) { .admin-grid { grid-template-columns: 1fr; } }
+    .ball { width: 90px; height: 90px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 -4px 12px rgba(0,0,0,0.3), inset 0 4px 12px rgba(255,255,255,0.2); }
     .ball.animate { animation: ballDrop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
     @keyframes ballDrop { 0% { transform: translateY(-60px) scale(0.5); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
-    .ball-letter { font-size: 0.8rem; letter-spacing: 2px; opacity: 0.85; }
-    .ball-number { font-size: 2.2rem; line-height: 1; }
-    .ball-empty { width: 100px; height: 100px; border-radius: 50%; border: 3px dashed var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.85rem; }
-    .ball-display { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 24px; }
+    .ball-letter { font-size: 0.75rem; letter-spacing: 2px; opacity: 0.85; }
+    .ball-number { font-size: 2rem; line-height: 1; }
+    .ball-empty { width: 90px; height: 90px; border-radius: 50%; border: 3px dashed var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; }
+    .ball-display { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px; }
     .ball-col-b { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
     .ball-col-i { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; }
     .ball-col-n { background: linear-gradient(135deg, #22c55e, #15803d); color: #fff; }
     .ball-col-g { background: linear-gradient(135deg, #f97316, #c2410c); color: #fff; }
     .ball-col-o { background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; }
-    .drawn-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-    .drawn-col-header { font-size: 1.1rem; font-weight: 900; text-align: center; padding: 8px; border-radius: 8px; margin-bottom: 6px; }
+    .drawn-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .drawn-col-header { font-size: 1rem; font-weight: 900; text-align: center; padding: 7px; border-radius: 7px; margin-bottom: 5px; }
     .drawn-col-header.B { background: var(--col-b-dim); color: var(--col-b); }
     .drawn-col-header.I { background: var(--col-i-dim); color: var(--col-i); }
     .drawn-col-header.N { background: var(--col-n-dim); color: var(--col-n); }
     .drawn-col-header.G { background: var(--col-g-dim); color: var(--col-g); }
     .drawn-col-header.O { background: var(--col-o-dim); color: var(--col-o); }
-    .drawn-numbers-list { display: flex; flex-direction: column; gap: 4px; }
-    .drawn-chip { text-align: center; padding: 4px 8px; border-radius: 6px; font-size: 0.9rem; font-weight: 700; }
+    .drawn-numbers-list { display: flex; flex-direction: column; gap: 3px; }
+    .drawn-chip { text-align: center; padding: 3px 6px; border-radius: 5px; font-size: 0.85rem; font-weight: 700; }
     .drawn-chip.B { background: var(--col-b-dim); color: var(--col-b); }
     .drawn-chip.I { background: var(--col-i-dim); color: var(--col-i); }
     .drawn-chip.N { background: var(--col-n-dim); color: var(--col-n); }
     .drawn-chip.G { background: var(--col-g-dim); color: var(--col-g); }
     .drawn-chip.O { background: var(--col-o-dim); color: var(--col-o); }
-    .bingo-card { border-radius: 16px; overflow: hidden; border: 2px solid var(--border); }
+    .bingo-card { border-radius: 14px; overflow: hidden; border: 2px solid var(--border); margin-bottom: 14px; }
+    .bingo-card-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 6px; text-align: center; }
     .bingo-header { display: grid; grid-template-columns: repeat(5, 1fr); }
-    .bingo-header-cell { padding: 12px 8px; text-align: center; font-size: 1.5rem; font-weight: 900; }
+    .bingo-header-cell { padding: 10px 6px; text-align: center; font-size: 1.3rem; font-weight: 900; }
     .bingo-header-cell.B { background: var(--col-b); }
     .bingo-header-cell.I { background: var(--col-i); }
     .bingo-header-cell.N { background: var(--col-n); }
     .bingo-header-cell.G { background: var(--col-g); }
     .bingo-header-cell.O { background: var(--col-o); }
     .bingo-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
-    .bingo-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); cursor: default; transition: background 0.2s; }
+    .bingo-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 1.05rem; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); cursor: default; transition: background 0.2s; }
     .bingo-cell.col-B { border-top: 2px solid var(--col-b-dim); }
     .bingo-cell.col-I { border-top: 2px solid var(--col-i-dim); }
     .bingo-cell.col-N { border-top: 2px solid var(--col-n-dim); }
     .bingo-cell.col-G { border-top: 2px solid var(--col-g-dim); }
     .bingo-cell.col-O { border-top: 2px solid var(--col-o-dim); }
     .bingo-cell.marked { background: var(--marked); color: #1a1a2e; animation: stamp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .bingo-cell.free { background: var(--free); color: #1a1a2e; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; }
+    .bingo-cell.free { background: var(--free); color: #1a1a2e; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; }
     @keyframes stamp { 0% { transform: scale(1.4); } 60% { transform: scale(0.9); } 100% { transform: scale(1); } }
-    .player-list { display: flex; flex-direction: column; gap: 8px; }
-    .player-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); }
-    .player-name { font-weight: 600; }
-    .player-badge { font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; font-weight: 700; }
-    .badge-joined { background: #14532d; color: #86efac; }
-    .badge-winner { background: var(--free); color: #1a1a2e; }
+    .winners-list { display: flex; flex-direction: column; gap: 6px; }
+    .winner-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--surface2); border-radius: 8px; border: 1px solid var(--free); }
+    .winner-rank { font-size: 1.1rem; }
+    .winner-name { font-weight: 700; color: var(--free); }
     .copy-link-row { display: flex; gap: 8px; }
-    .copy-link-row input { flex: 1; margin-bottom: 0; font-size: 0.85rem; }
-    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media (max-width: 650px) { .admin-grid { grid-template-columns: 1fr; } }
-    #winner-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; text-align: center; }
-    #winner-overlay.show { display: flex; }
-    .winner-box { background: var(--surface); border: 2px solid var(--free); border-radius: 24px; padding: 48px; animation: winnerPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); max-width: 420px; }
-    @keyframes winnerPop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-    .winner-trophy { font-size: 5rem; display: block; }
-    .winner-title { font-size: 2.5rem; font-weight: 900; color: var(--free); margin: 12px 0; }
-    .winner-name { font-size: 1.5rem; color: var(--text); margin-bottom: 24px; }
-    .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
-    .confetti-piece { position: absolute; top: -20px; width: 10px; height: 10px; animation: confettiFall linear forwards; }
-    @keyframes confettiFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
-    .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--surface2); border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; color: var(--text-muted); }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--col-n); box-shadow: 0 0 6px var(--col-n); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    .section-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px; }
-    .error-msg { color: #f87171; font-size: 0.9rem; margin-top: 8px; min-height: 20px; }
-    .numbers-remaining { text-align: center; color: var(--text-muted); font-size: 0.85rem; }
-    .last-drawn-label { text-align: center; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
-    .player-view-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .player-name-display { font-size: 1.1rem; font-weight: 700; color: var(--text); }
-    .game-id-badge { font-size: 0.8rem; color: var(--text-muted); font-family: monospace; }
-    .drawn-history-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-    .history-chip { padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; }
+    .copy-link-row input { flex: 1; margin-bottom: 0; font-size: 0.82rem; }
+    .card-count-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .card-count-btn { flex: 1; padding: 10px 6px; border-radius: 9px; border: 2px solid var(--border); background: var(--surface2); color: var(--text-muted); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.15s; text-align: center; }
+    .card-count-btn.selected { border-color: var(--accent); color: var(--accent); background: rgba(124,58,237,0.15); }
+    .drawn-history-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .history-chip { padding: 3px 9px; border-radius: 5px; font-size: 0.8rem; font-weight: 700; }
     .history-chip.B { background: var(--col-b-dim); color: var(--col-b); }
     .history-chip.I { background: var(--col-i-dim); color: var(--col-i); }
     .history-chip.N { background: var(--col-n-dim); color: var(--col-n); }
     .history-chip.G { background: var(--col-g-dim); color: var(--col-g); }
     .history-chip.O { background: var(--col-o-dim); color: var(--col-o); }
-    hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+    .section-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px; }
+    .error-msg { color: #f87171; font-size: 0.88rem; margin-top: 6px; min-height: 18px; }
+    .numbers-remaining { text-align: center; color: var(--text-muted); font-size: 0.82rem; }
+    .last-drawn-label { text-align: center; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+    .player-view-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .player-name-display { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .game-id-badge { font-size: 0.78rem; color: var(--text-muted); font-family: monospace; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+    #winner-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; text-align: center; }
+    #winner-overlay.show { display: flex; }
+    .winner-box { background: var(--surface); border: 2px solid var(--free); border-radius: 24px; padding: 40px; animation: winnerPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); max-width: 380px; }
+    @keyframes winnerPop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .winner-trophy { font-size: 4rem; display: block; }
+    .winner-title { font-size: 2.2rem; font-weight: 900; color: var(--free); margin: 10px 0; }
+    .winner-name-overlay { font-size: 1.3rem; color: var(--text); margin-bottom: 12px; }
+    .winner-continue-note { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
+    .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+    .confetti-piece { position: absolute; top: -20px; animation: confettiFall linear forwards; }
+    @keyframes confettiFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
   </style>
 </head>
 <body>
@@ -129,92 +146,133 @@
   <div class="winner-box">
     <span class="winner-trophy">🏆</span>
     <div class="winner-title">BINGO!</div>
-    <div class="winner-name" id="winner-name-display">Someone won!</div>
-    <button class="btn btn-ghost" onclick="closeWinner()">Close</button>
+    <div class="winner-name-overlay" id="winner-name-display">Someone won!</div>
+    <div class="winner-continue-note">The game continues — keep playing!</div>
+    <button class="btn btn-ghost" onclick="closeWinner()">Keep Playing</button>
   </div>
 </div>
-<div class="header"><h1>🎱 BINGO</h1><p>Multiplayer real-time bingo — up to 10 players</p></div>
-<div id="view-home" class="view active">
-  <div class="card">
-    <button class="btn btn-primary btn-full" style="font-size:1.1rem;padding:16px;" onclick="createGame()">🎮 Create New Game</button>
-    <p id="create-error" class="error-msg"></p>
+<div class="page-layout">
+  <div class="sidebar" id="players-sidebar">
+    <div class="sidebar-title">👥 Players</div>
+    <div id="sidebar-player-list"></div>
   </div>
-  <div class="divider">or join an existing game</div>
-  <div class="card">
-    <label for="join-game-id">Game ID</label>
-    <input class="input" id="join-game-id" type="text" placeholder="e.g. ABC123" maxlength="8" />
-    <label for="join-name">Your Name</label>
-    <input class="input" id="join-name" type="text" placeholder="Enter your name" maxlength="30" />
-    <button class="btn btn-ghost btn-full" onclick="joinGame()">Join Game →</button>
-    <p id="join-error" class="error-msg"></p>
-  </div>
-</div>
-<div id="view-admin" class="view">
-  <div class="status-bar">
-    <div style="display:flex;align-items:center;gap:8px;"><div class="status-dot"></div><span>Live</span></div>
-    <span id="admin-game-id-label">Game: —</span>
-    <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.8rem;" onclick="resetToHome()">Leave</button>
-  </div>
-  <div class="card">
-    <div class="ball-display">
-      <div class="last-drawn-label">Last Drawn</div>
-      <div id="admin-ball-container"><div class="ball-empty">No draw yet</div></div>
-    </div>
-    <button class="btn-draw" id="draw-btn" onclick="drawNumber()">🎱 Draw Number</button>
-    <p class="numbers-remaining" id="admin-numbers-remaining" style="margin-top:12px;"></p>
-    <p id="draw-error" class="error-msg" style="text-align:center;"></p>
-  </div>
-  <div class="admin-grid">
-    <div class="card"><div class="section-title">Drawn Numbers</div><div class="drawn-board" id="admin-drawn-board"></div></div>
-    <div class="card">
-      <div class="section-title">Players (<span id="player-count">0</span>/10)</div>
-      <div class="player-list" id="admin-player-list"></div>
-      <hr />
-      <div class="section-title" style="margin-top:0;">Shareable Link</div>
-      <div class="copy-link-row">
-        <input class="input" id="share-link-input" type="text" readonly />
-        <button class="btn btn-ghost" onclick="copyShareLink()">Copy</button>
+  <div class="main-content">
+    <div class="header"><h1>🎱 BINGO</h1><p>Multiplayer real-time bingo — up to 10 players</p></div>
+
+    <div id="view-home" class="view active">
+      <div class="card">
+        <button class="btn btn-primary btn-full" style="font-size:1.05rem;padding:15px;" onclick="createGame()">🎮 Create New Game</button>
+        <p id="create-error" class="error-msg"></p>
       </div>
-      <hr />
-      <button class="btn btn-danger btn-full" onclick="resetGame()">↺ Reset Game</button>
+      <div class="divider">or join an existing game</div>
+      <div class="card">
+        <label for="join-game-id">Game ID</label>
+        <input class="input" id="join-game-id" type="text" placeholder="e.g. ABC123" maxlength="8" style="font-family:monospace;font-size:1.1rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;" />
+        <label for="join-name">Your Name</label>
+        <input class="input" id="join-name" type="text" placeholder="Enter your name" maxlength="30" />
+        <label>Number of Bingo Cards</label>
+        <div class="card-count-row">
+          <div class="card-count-btn selected" data-count="1" onclick="selectCardCount(1)">1 Card</div>
+          <div class="card-count-btn" data-count="2" onclick="selectCardCount(2)">2 Cards</div>
+          <div class="card-count-btn" data-count="3" onclick="selectCardCount(3)">3 Cards</div>
+          <div class="card-count-btn" data-count="4" onclick="selectCardCount(4)">4 Cards</div>
+        </div>
+        <button class="btn btn-ghost btn-full" onclick="joinGame()">Join Game →</button>
+        <p id="join-error" class="error-msg"></p>
+      </div>
     </div>
-  </div>
-  <div class="card" style="margin-top:20px;"><div class="section-title">Draw History</div><div class="drawn-history-chips" id="admin-draw-history"></div></div>
-</div>
-<div id="view-player" class="view">
-  <div class="status-bar">
-    <div style="display:flex;align-items:center;gap:8px;"><div class="status-dot"></div><span>Connected</span></div>
-    <span id="player-game-id-label">Game: —</span>
-    <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.8rem;" onclick="resetToHome()">Leave</button>
-  </div>
-  <div class="player-view-header">
-    <div>
-      <div class="player-name-display" id="player-name-display">Player</div>
-      <div class="game-id-badge" id="player-game-id-badge">Game: —</div>
+
+    <div id="view-admin" class="view">
+      <div class="status-bar">
+        <div style="display:flex;align-items:center;gap:8px;"><div class="status-dot"></div><span>Live</span></div>
+        <span id="admin-game-id-label" style="font-family:monospace;font-weight:700;"></span>
+        <button class="btn btn-ghost" style="padding:5px 10px;font-size:0.78rem;" onclick="resetToHome()">Leave</button>
+      </div>
+      <div class="card" style="text-align:center;padding:16px 20px;">
+        <div class="game-id-hero-label">Share this Game ID with players</div>
+        <div class="game-id-hero-value" id="admin-game-id-display">——</div>
+        <div style="margin-top:10px;">
+          <div class="copy-link-row" style="justify-content:center;">
+            <input class="input" id="share-link-input" type="text" readonly style="max-width:360px;margin-bottom:0;font-size:0.8rem;" />
+            <button class="btn btn-ghost" onclick="copyShareLink()">Copy Link</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ball-display">
+          <div class="last-drawn-label">Last Drawn</div>
+          <div id="admin-ball-container"><div class="ball-empty">No draw yet</div></div>
+        </div>
+        <button class="btn-draw" id="draw-btn" onclick="drawNumber()">🎱 Draw Number</button>
+        <p class="numbers-remaining" id="admin-numbers-remaining" style="margin-top:10px;"></p>
+        <p id="draw-error" class="error-msg" style="text-align:center;"></p>
+      </div>
+      <div class="admin-grid">
+        <div class="card">
+          <div class="section-title">Drawn Numbers</div>
+          <div class="drawn-board" id="admin-drawn-board"></div>
+        </div>
+        <div class="card">
+          <div class="section-title">🏆 Winners (<span id="winners-count">0</span>)</div>
+          <div class="winners-list" id="admin-winners-list"><p style="color:var(--text-muted);font-size:0.85rem;">No winners yet.</p></div>
+          <hr />
+          <button class="btn btn-danger btn-full" onclick="resetGame()">↺ Reset Game</button>
+        </div>
+      </div>
+      <div class="card"><div class="section-title">Draw History</div><div class="drawn-history-chips" id="admin-draw-history"></div></div>
     </div>
-    <div style="text-align:right;">
-      <div class="last-drawn-label">Last Drawn</div>
-      <div id="player-ball-container" style="margin-top:8px;"><div class="ball-empty" style="width:64px;height:64px;font-size:0.75rem;">—</div></div>
+
+    <div id="view-player" class="view">
+      <div class="status-bar">
+        <div style="display:flex;align-items:center;gap:8px;"><div class="status-dot"></div><span>Connected</span></div>
+        <span id="player-game-id-label" style="font-family:monospace;font-weight:700;font-size:0.85rem;"></span>
+        <button class="btn btn-ghost" style="padding:5px 10px;font-size:0.78rem;" onclick="resetToHome()">Leave</button>
+      </div>
+      <div class="player-view-header">
+        <div>
+          <div class="player-name-display" id="player-name-display">Player</div>
+          <div class="game-id-badge" id="player-game-id-badge"></div>
+        </div>
+        <div style="text-align:right;">
+          <div class="last-drawn-label">Last Drawn</div>
+          <div id="player-ball-container" style="margin-top:6px;"><div class="ball-empty" style="width:60px;height:60px;font-size:0.7rem;">—</div></div>
+        </div>
+      </div>
+      <div id="player-cards-container"></div>
+      <div class="card">
+        <div class="section-title">All Drawn Numbers</div>
+        <div class="drawn-history-chips" id="player-draw-history"></div>
+        <p id="player-draw-history-empty" style="color:var(--text-muted);font-size:0.82rem;">No numbers drawn yet.</p>
+      </div>
     </div>
-  </div>
-  <div class="card" style="padding:16px;"><div class="bingo-card" id="player-bingo-card"></div></div>
-  <div class="card">
-    <div class="section-title">All Drawn Numbers</div>
-    <div class="drawn-history-chips" id="player-draw-history"></div>
-    <p id="player-draw-history-empty" style="color:var(--text-muted);font-size:0.85rem;">No numbers drawn yet.</p>
   </div>
 </div>
 <script>
-let state = { view:'home', gameId:null, adminKey:null, playerKey:null, playerName:null, card:null, drawnNumbers:[], winner:null, ablyChannel:null, ablyClient:null };
+let state = { view:'home', gameId:null, adminKey:null, playerKey:null, playerName:null, cards:[], drawnNumbers:[], winner:null, winners:[], ablyChannel:null, ablyClient:null, selectedCardCount:1, lastWinnerCount:0 };
+
 function getColLetter(n) { return n<=15?'B':n<=30?'I':n<=45?'N':n<=60?'G':'O'; }
-function showView(name) { document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); document.getElementById('view-'+name).classList.add('active'); state.view=name; }
+
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  state.view = name;
+  document.getElementById('players-sidebar').classList.toggle('visible', name==='admin'||name==='player');
+}
+
 function setError(id,msg) { const el=document.getElementById(id); if(el) el.textContent=msg; }
+
 async function apiFetch(path,options={}) {
   const res=await fetch('/api/'+path,{headers:{'Content-Type':'application/json'},...options});
   const data=await res.json();
   if(!res.ok) throw new Error(data.error||'Request failed');
   return data;
 }
+
+function selectCardCount(n) {
+  state.selectedCardCount=n;
+  document.querySelectorAll('.card-count-btn').forEach(b=>b.classList.toggle('selected',parseInt(b.dataset.count)===n));
+}
+
 async function connectAbly(gameId,clientId) {
   if(state.ablyClient){state.ablyClient.close();state.ablyClient=null;}
   return new Promise((resolve,reject)=>{
@@ -223,14 +281,27 @@ async function connectAbly(gameId,clientId) {
     ably.connection.on('failed',reject);
   });
 }
+
+function renderSidebar(players) {
+  const list=document.getElementById('sidebar-player-list');
+  const keys=Object.keys(players||{});
+  if(!keys.length){list.innerHTML='<p style="color:var(--text-muted);font-size:0.8rem;">No players yet.</p>';return;}
+  const winnerSet=new Set((state.winners||[]).map(w=>w.playerKey));
+  list.innerHTML=keys.map(k=>{
+    const p=players[k],isWinner=winnerSet.has(k),cc=p.cardCount||(p.cards?p.cards.length:1);
+    return `<div class="sidebar-player ${isWinner?'is-winner':''}"><div class="sidebar-dot ${isWinner?'winner':''}"></div><span class="sidebar-player-name">${p.name}</span><span class="sidebar-player-cards">${cc>1?cc+'🃏 ':''}${isWinner?'🏆':''}</span></div>`;
+  }).join('');
+}
+
 async function createGame() {
   setError('create-error','');
   try {
-    const data=await apiFetch('create-game',{method:'POST',body:JSON.stringify({})});
+    const data=await apiFetch('create-game',{method:'POST',body:'{}'});
     window.history.pushState({},'',`/?game=${data.gameId}&admin=${data.adminKey}`);
     await enterAdminView(data.gameId,data.adminKey);
   } catch(e){setError('create-error',e.message);}
 }
+
 async function joinGame() {
   setError('join-error','');
   const gameId=document.getElementById('join-game-id').value.trim().toUpperCase();
@@ -238,98 +309,123 @@ async function joinGame() {
   if(!gameId) return setError('join-error','Enter a game ID.');
   if(!playerName) return setError('join-error','Enter your name.');
   window.history.pushState({},'',`/?game=${gameId}&name=${encodeURIComponent(playerName)}`);
-  await enterPlayerView(gameId,playerName);
+  await enterPlayerView(gameId,playerName,state.selectedCardCount);
 }
+
 async function enterAdminView(gameId,adminKey) {
-  state.gameId=gameId; state.adminKey=adminKey;
-  document.getElementById('admin-game-id-label').textContent=`Game: ${gameId}`;
+  state.gameId=gameId;state.adminKey=adminKey;
+  document.getElementById('admin-game-id-label').textContent=gameId;
+  document.getElementById('admin-game-id-display').textContent=gameId;
   document.getElementById('share-link-input').value=`${location.origin}/?game=${gameId}`;
   const gs=await apiFetch(`game-state?gameId=${gameId}`);
-  state.drawnNumbers=gs.drawnNumbers||[]; state.winner=gs.winner;
-  renderAdminDrawnBoard(); renderAdminPlayers(gs.players); updateDrawButton();
+  state.drawnNumbers=gs.drawnNumbers||[];state.winner=gs.winner;state.winners=gs.winners||[];
+  renderAdminDrawnBoard();renderAdminWinners();renderSidebar(gs.players);updateDrawButton();
   const ch=await connectAbly(gameId,`admin-${gameId}`);
   ch.subscribe('game-update',(msg)=>{
-    const d=msg.data; state.drawnNumbers=d.drawnNumbers; state.winner=d.winner;
-    renderAdminDrawnBoard(); updateDrawButton(); updateAdminBall(d.number);
-    if(d.winner) showWinner(d.winner.name);
-    apiFetch(`game-state?gameId=${gameId}`).then(g=>renderAdminPlayers(g.players)).catch(()=>{});
+    const d=msg.data;state.drawnNumbers=d.drawnNumbers;state.winner=d.winner;state.winners=d.winners||[];
+    renderAdminDrawnBoard();renderAdminWinners();updateDrawButton();updateBall('admin-ball-container',d.number,90);
+    if(d.winners&&d.winners.length>state.lastWinnerCount){showWinner(d.winners[d.winners.length-1].name);state.lastWinnerCount=d.winners.length;}
+    apiFetch(`game-state?gameId=${gameId}`).then(g=>renderSidebar(g.players)).catch(()=>{});
   });
+  ch.subscribe('player-joined',(msg)=>{ renderSidebar(msg.data.players); });
   showView('admin');
 }
+
 function renderAdminDrawnBoard() {
   const cols={B:[],I:[],N:[],G:[],O:[]};
   for(const n of state.drawnNumbers) cols[getColLetter(n)].push(n);
-  const board=document.getElementById('admin-drawn-board'); board.innerHTML='';
+  const board=document.getElementById('admin-drawn-board');board.innerHTML='';
   for(const l of ['B','I','N','G','O']){
-    const col=document.createElement('div'); col.className='drawn-col';
-    col.innerHTML=`<div class="drawn-col-header ${l}">${l}</div><div class="drawn-numbers-list">${cols[l].sort((a,b)=>a-b).map(n=>`<div class="drawn-chip ${l}">${n}</div>`).join('')||'<span style="color:var(--text-muted);font-size:0.8rem;">—</span>'}</div>`;
+    const col=document.createElement('div');
+    col.innerHTML=`<div class="drawn-col-header ${l}">${l}</div><div class="drawn-numbers-list">${cols[l].sort((a,b)=>a-b).map(n=>`<div class="drawn-chip ${l}">${n}</div>`).join('')||'<span style="color:var(--text-muted);font-size:0.75rem;">—</span>'}</div>`;
     board.appendChild(col);
   }
   document.getElementById('admin-draw-history').innerHTML=state.drawnNumbers.map(n=>`<span class="history-chip ${getColLetter(n)}">${getColLetter(n)}${n}</span>`).join('');
   document.getElementById('admin-numbers-remaining').textContent=`${75-state.drawnNumbers.length} numbers remaining`;
 }
-function renderAdminPlayers(players) {
-  const list=document.getElementById('admin-player-list');
-  const keys=Object.keys(players||{});
-  document.getElementById('player-count').textContent=keys.length;
-  if(!keys.length){list.innerHTML='<p style="color:var(--text-muted);font-size:0.85rem;">No players yet. Share the link!</p>';return;}
-  list.innerHTML=keys.map(k=>{const p=players[k];const w=state.winner&&state.winner.playerKey===k;return `<div class="player-item"><span class="player-name">${p.name}</span><span class="player-badge ${w?'badge-winner':'badge-joined'}">${w?'🏆 Winner':'Joined'}</span></div>`;}).join('');
+
+function renderAdminWinners() {
+  const list=document.getElementById('admin-winners-list'),w=state.winners||[];
+  document.getElementById('winners-count').textContent=w.length;
+  if(!w.length){list.innerHTML='<p style="color:var(--text-muted);font-size:0.85rem;">No winners yet.</p>';return;}
+  const medals=['🥇','🥈','🥉'];
+  list.innerHTML=w.map((win,i)=>`<div class="winner-item"><span class="winner-rank">${medals[i]||'🏅'}</span><span class="winner-name">${win.name}</span>${win.atNumber?`<span style="color:var(--text-muted);font-size:0.78rem;margin-left:auto;">at ${getColLetter(win.atNumber)}${win.atNumber}</span>`:''}</div>`).join('');
 }
+
 async function drawNumber() {
-  const btn=document.getElementById('draw-btn'); btn.disabled=true; setError('draw-error','');
+  const btn=document.getElementById('draw-btn');btn.disabled=true;setError('draw-error','');
   try{await apiFetch('draw-number',{method:'POST',body:JSON.stringify({gameId:state.gameId,adminKey:state.adminKey})});}
   catch(e){setError('draw-error',e.message);}finally{btn.disabled=false;}
 }
+
 function updateDrawButton() {
   const btn=document.getElementById('draw-btn');
-  if(state.winner||state.drawnNumbers.length>=75){btn.disabled=true;btn.textContent=state.winner?'🏆 Game Over':'✅ All Numbers Drawn';}
+  if(state.drawnNumbers.length>=75){btn.disabled=true;btn.textContent='✅ All Numbers Drawn';}
   else{btn.disabled=false;btn.textContent='🎱 Draw Number';}
 }
-function updateAdminBall(n) {
-  if(!n) return; const l=getColLetter(n);
-  const ball=document.createElement('div'); ball.className=`ball ball-col-${l.toLowerCase()} animate`;
-  ball.innerHTML=`<span class="ball-letter">${l}</span><span class="ball-number">${n}</span>`;
-  const c=document.getElementById('admin-ball-container'); c.innerHTML=''; c.appendChild(ball);
+
+function updateBall(containerId,number,size=90) {
+  if(!number)return;const l=getColLetter(number);
+  const ball=document.createElement('div');ball.className=`ball ball-col-${l.toLowerCase()} animate`;
+  ball.style.width=size+'px';ball.style.height=size+'px';
+  ball.innerHTML=`<span class="ball-letter" style="font-size:${size*0.085}rem">${l}</span><span class="ball-number" style="font-size:${size*0.022}rem">${number}</span>`;
+  const c=document.getElementById(containerId);c.innerHTML='';c.appendChild(ball);
 }
+
 function copyShareLink(){const i=document.getElementById('share-link-input');i.select();navigator.clipboard.writeText(i.value).catch(()=>{});}
-async function resetGame(){
-  if(!confirm('Reset this game?')) return;
-  try{const d=await apiFetch('create-game',{method:'POST',body:JSON.stringify({})});
-    window.history.pushState({},'',`/?game=${d.gameId}&admin=${d.adminKey}`);
+
+async function resetGame() {
+  if(!confirm('Reset this game? This will start a fresh game.'))return;
+  try{
+    const data=await apiFetch('create-game',{method:'POST',body:'{}'});
+    window.history.pushState({},'',`/?game=${data.gameId}&admin=${data.adminKey}`);
     if(state.ablyClient){state.ablyClient.close();state.ablyClient=null;}
-    state.drawnNumbers=[];state.winner=null;await enterAdminView(d.gameId,d.adminKey);
+    state.drawnNumbers=[];state.winner=null;state.winners=[];state.lastWinnerCount=0;
+    await enterAdminView(data.gameId,data.adminKey);
   }catch(e){alert('Failed to reset: '+e.message);}
 }
-async function enterPlayerView(gameId,playerName){
+
+async function enterPlayerView(gameId,playerName,cardCount=1) {
   setError('join-error','');
   try{
-    const data=await apiFetch('join-game',{method:'POST',body:JSON.stringify({gameId,playerName})});
+    const data=await apiFetch('join-game',{method:'POST',body:JSON.stringify({gameId,playerName,cardCount})});
     state.gameId=gameId;state.playerName=playerName;state.playerKey=data.playerKey;
-    state.card=data.card;state.drawnNumbers=data.drawnNumbers||[];state.winner=data.winner;
+    state.cards=data.cards||(data.card?[data.card]:[]);
+    state.drawnNumbers=data.drawnNumbers||[];state.winner=data.winner;state.winners=data.winners||[];
     document.getElementById('player-name-display').textContent=playerName;
-    document.getElementById('player-game-id-badge').textContent=`Game: ${gameId}`;
-    document.getElementById('player-game-id-label').textContent=`Game: ${gameId}`;
-    renderPlayerCard();renderPlayerHistory();
+    document.getElementById('player-game-id-badge').textContent=`Game ID: ${gameId}`;
+    document.getElementById('player-game-id-label').textContent=gameId;
+    renderPlayerCards();renderPlayerHistory();
     const ch=await connectAbly(gameId,`player-${data.playerKey}`);
     ch.subscribe('game-update',(msg)=>{
-      const d=msg.data;state.drawnNumbers=d.drawnNumbers;state.winner=d.winner;
-      updatePlayerBall(d.number);markCells(d.drawnNumbers);renderPlayerHistory();
-      if(d.winner)showWinner(d.winner.name);
+      const d=msg.data;state.drawnNumbers=d.drawnNumbers;state.winner=d.winner;state.winners=d.winners||[];
+      updateBall('player-ball-container',d.number,60);markAllCards(d.drawnNumbers);renderPlayerHistory();
+      if(d.winners&&d.winners.length>state.lastWinnerCount){showWinner(d.winners[d.winners.length-1].name);state.lastWinnerCount=d.winners.length;}
     });
-    if(state.winner)showWinner(state.winner.name);
+    ch.subscribe('player-joined',(msg)=>{renderSidebar(msg.data.players);});
+    apiFetch(`game-state?gameId=${gameId}`).then(gs=>renderSidebar(gs.players)).catch(()=>{});
+    if(state.winners.length)showWinner(state.winners[state.winners.length-1].name);
     showView('player');
   }catch(e){setError('join-error',e.message);}
 }
-function renderPlayerCard(){
+
+function renderPlayerCards() {
+  const container=document.getElementById('player-cards-container');container.innerHTML='';
   const cols=['B','I','N','G','O'];
-  let html='<div class="bingo-header">'+cols.map(c=>`<div class="bingo-header-cell ${c}">${c}</div>`).join('')+'</div><div class="bingo-grid">';
-  for(let r=0;r<5;r++)for(let c=0;c<5;c++){
-    const v=state.card[r][c],f=v==='FREE',m=f||state.drawnNumbers.includes(v);
-    html+=`<div class="bingo-cell col-${cols[c]}${f?' free':''}${m&&!f?' marked':''}" data-row="${r}" data-col="${c}">${v}</div>`;
-  }
-  html+='</div>';document.getElementById('player-bingo-card').innerHTML=html;
+  state.cards.forEach((card,idx)=>{
+    const wrapper=document.createElement('div');wrapper.className='card';wrapper.style.padding='14px';
+    if(state.cards.length>1){const lbl=document.createElement('div');lbl.className='bingo-card-label';lbl.textContent=`Card ${idx+1} of ${state.cards.length}`;wrapper.appendChild(lbl);}
+    const cardEl=document.createElement('div');cardEl.className='bingo-card';cardEl.dataset.cardIdx=idx;
+    let html='<div class="bingo-header">'+cols.map(c=>`<div class="bingo-header-cell ${c}">${c}</div>`).join('')+'</div><div class="bingo-grid">';
+    for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+      const v=card[r][c],f=v==='FREE',m=f||state.drawnNumbers.includes(v);
+      html+=`<div class="bingo-cell col-${cols[c]}${f?' free':''}${m&&!f?' marked':''}" data-row="${r}" data-col="${c}" data-card="${idx}">${v}</div>`;
+    }
+    cardEl.innerHTML=html+'</div>';wrapper.appendChild(cardEl);container.appendChild(wrapper);
+  });
 }
-function markCells(drawnNumbers){
+
+function markAllCards(drawnNumbers) {
   const s=new Set(drawnNumbers);
   document.querySelectorAll('.bingo-cell').forEach(cell=>{
     if(cell.textContent==='FREE')return;
@@ -338,36 +434,39 @@ function markCells(drawnNumbers){
     }
   });
 }
-function updatePlayerBall(n){
-  if(!n)return;const l=getColLetter(n);
-  const ball=document.createElement('div');ball.className=`ball ball-col-${l.toLowerCase()} animate`;
-  ball.style.width='64px';ball.style.height='64px';
-  ball.innerHTML=`<span class="ball-letter" style="font-size:0.6rem;">${l}</span><span class="ball-number" style="font-size:1.4rem;">${n}</span>`;
-  const c=document.getElementById('player-ball-container');c.innerHTML='';c.appendChild(ball);
-}
-function renderPlayerHistory(){
+
+function renderPlayerHistory() {
   const c=document.getElementById('player-draw-history'),e=document.getElementById('player-draw-history-empty');
   if(!state.drawnNumbers.length){e.style.display='block';c.innerHTML='';return;}
-  e.style.display='none';c.innerHTML=state.drawnNumbers.map(n=>`<span class="history-chip ${getColLetter(n)}">${getColLetter(n)}${n}</span>`).join('');
+  e.style.display='none';
+  c.innerHTML=state.drawnNumbers.map(n=>`<span class="history-chip ${getColLetter(n)}">${getColLetter(n)}${n}</span>`).join('');
 }
-function showWinner(name){document.getElementById('winner-name-display').textContent=name+' wins!';document.getElementById('winner-overlay').classList.add('show');spawnConfetti();}
+
+function showWinner(name){document.getElementById('winner-name-display').textContent=name+' got BINGO!';document.getElementById('winner-overlay').classList.add('show');spawnConfetti();}
 function closeWinner(){document.getElementById('winner-overlay').classList.remove('show');}
 function spawnConfetti(){
   const c=document.getElementById('confetti');c.innerHTML='';
   const colors=['#3b82f6','#8b5cf6','#22c55e','#f97316','#ef4444','#fbbf24','#fff'];
-  for(let i=0;i<80;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.left=Math.random()*100+'vw';el.style.background=colors[Math.floor(Math.random()*colors.length)];el.style.width=(Math.random()*10+6)+'px';el.style.height=(Math.random()*10+6)+'px';el.style.borderRadius=Math.random()>.5?'50%':'0';el.style.animationDuration=(Math.random()*2+2)+'s';el.style.animationDelay=(Math.random()*1.5)+'s';c.appendChild(el);}
+  for(let i=0;i<80;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};width:${Math.random()*10+6}px;height:${Math.random()*10+6}px;border-radius:${Math.random()>.5?'50%':'0'};animation-duration:${Math.random()*2+2}s;animation-delay:${Math.random()*1.5}s;`;c.appendChild(el);}
 }
-function resetToHome(){
+
+function resetToHome() {
   if(state.ablyClient){state.ablyClient.close();state.ablyClient=null;}
-  state={view:'home',gameId:null,adminKey:null,playerKey:null,playerName:null,card:null,drawnNumbers:[],winner:null,ablyChannel:null,ablyClient:null};
-  window.history.pushState({},'','/');showView('home');
+  state={view:'home',gameId:null,adminKey:null,playerKey:null,playerName:null,cards:[],drawnNumbers:[],winner:null,winners:[],ablyChannel:null,ablyClient:null,selectedCardCount:1,lastWinnerCount:0};
+  window.history.pushState({},'','/');
+  document.getElementById('players-sidebar').classList.remove('visible');
+  showView('home');
 }
+
 (function init(){
   const p=new URLSearchParams(window.location.search);
   const gameId=p.get('game'),adminKey=p.get('admin'),playerName=p.get('name');
-  if(gameId&&adminKey)enterAdminView(gameId,adminKey);
-  else if(gameId&&playerName){document.getElementById('join-game-id').value=gameId;document.getElementById('join-name').value=playerName;enterPlayerView(gameId,playerName);}
-  else showView('home');
+  if(gameId&&adminKey) enterAdminView(gameId,adminKey);
+  else if(gameId&&playerName) enterPlayerView(gameId,playerName,1);
+  else {
+    if(gameId) document.getElementById('join-game-id').value=gameId;
+    showView('home');
+  }
 })();
 </script>
 </body>
