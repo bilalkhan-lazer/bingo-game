@@ -19,8 +19,10 @@
     html, body { height: 100%; }
     body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100dvh; overflow-x: hidden; }
     .page-wrap { display: flex; min-height: 100dvh; }
+    /* ── Desktop sidebar — force-hidden on mobile ── */
     .sidebar { width: 210px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 16px 12px; display: none; flex-direction: column; gap: 6px; position: sticky; top: 0; height: 100dvh; overflow-y: auto; }
     .sidebar.visible { display: flex; }
+    @media (max-width: 640px) { .sidebar { display: none !important; } }
     .sidebar-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; }
     .sidebar-player { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); font-size: 0.83rem; }
     .sidebar-player.is-winner { border-color: var(--free); }
@@ -28,35 +30,46 @@
     .sidebar-player-badge { font-size: 0.7rem; }
     .sidebar-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--col-n); flex-shrink: 0; }
     .sidebar-dot.winner { background: var(--free); box-shadow: 0 0 5px var(--free); }
+    /* ── Main content ── */
     .main-content { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0; padding-bottom: calc(80px + var(--safe-bottom)); }
     @media (min-width: 641px) { .main-content { padding-bottom: 24px; } }
+    /* ── Mobile bottom sheet ── */
     .mobile-sheet-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 300; }
     .mobile-sheet-overlay.open { display: block; }
     .mobile-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-radius: 20px 20px 0 0; border-top: 1px solid var(--border); padding: 0 16px calc(16px + var(--safe-bottom)); max-height: 65vh; overflow-y: auto; z-index: 301; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32,0.72,0,1); }
     .mobile-sheet.open { transform: translateY(0); }
     .sheet-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 16px; }
     .sheet-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px; }
+    /* ── Mobile FAB ── */
     .mobile-players-fab { display: none; position: fixed; bottom: calc(16px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); z-index: 200; background: var(--accent); color: #fff; border: none; border-radius: 50px; padding: 12px 22px; font-size: 0.9rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 20px rgba(124,58,237,0.5); white-space: nowrap; transition: all 0.15s; }
     .mobile-players-fab:active { transform: translateX(-50%) scale(0.96); }
     @media (max-width: 640px) { .mobile-players-fab.visible { display: flex; align-items: center; gap: 6px; } }
+    /* ── Header ── */
     .header { text-align: center; padding: 24px 16px 8px; width: 100%; }
     .header h1 { font-size: clamp(1.8rem, 8vw, 2.8rem); font-weight: 900; letter-spacing: -1px; background: linear-gradient(135deg, var(--col-b), var(--col-i), var(--col-n), var(--col-g), var(--col-o)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .header p { color: var(--text-muted); margin-top: 4px; font-size: clamp(0.8rem, 3vw, 0.9rem); }
-    .view { display: none; width: 100%; max-width: 640px; padding: 12px 12px 16px; }
+    /* ── Views — proper horizontal padding ── */
+    .view { display: none; width: 100%; max-width: 640px; padding: 12px 16px 16px; }
     .view.active { display: block; }
+    @media (max-width: 640px) { .view { padding: 10px 14px 14px; } }
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 12px; }
     .game-title-display { text-align: center; font-size: clamp(1rem, 5vw, 1.4rem); font-weight: 800; color: var(--text); margin-bottom: 2px; }
     .game-title-display.has-name { color: var(--free); }
+    /* ── Status banner ── */
     .status-banner { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: 12px; margin-bottom: 12px; font-size: 0.88rem; font-weight: 600; line-height: 1.4; border: 1px solid transparent; }
     .status-banner.waiting { background: rgba(124,58,237,0.15); border-color: rgba(124,58,237,0.3); color: #c4b5fd; }
     .status-banner.active  { background: rgba(34,197,94,0.12);  border-color: rgba(34,197,94,0.3);  color: #86efac; }
     .status-banner.winner  { background: rgba(251,191,36,0.15); border-color: rgba(251,191,36,0.4); color: var(--free); }
     .status-banner.done    { background: rgba(239,68,68,0.12);  border-color: rgba(239,68,68,0.3);  color: #fca5a5; }
     .status-banner-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
-    .top-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: 10px; margin-bottom: 10px; font-size: 0.8rem; color: var(--text-muted); }
-    .top-bar-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--col-n); box-shadow: 0 0 5px var(--col-n); animation: pulse 2s infinite; }
+    /* ── Top bar — truncates long game names ── */
+    .top-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--surface2); border-radius: 10px; margin-bottom: 10px; font-size: 0.8rem; color: var(--text-muted); }
+    .top-bar > *:first-child { flex: 1; min-width: 0; overflow: hidden; }
+    .top-bar > *:first-child span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+    .top-bar-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--col-n); box-shadow: 0 0 5px var(--col-n); animation: pulse 2s infinite; flex-shrink: 0; }
     @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
-    .top-bar-id { font-family: monospace; font-weight: 700; font-size: 0.85rem; color: var(--text); }
+    .top-bar-id { font-family: monospace; font-weight: 700; font-size: 0.85rem; color: var(--text); white-space: nowrap; flex-shrink: 0; }
+    /* ── Buttons ── */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 10px; border: none; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.15s; min-height: 44px; }
     .btn:active { transform: scale(0.97); }
     .btn-primary { background: var(--accent); color: #fff; }
@@ -65,10 +78,12 @@
     .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
     .btn-ghost:hover { background: var(--surface2); }
     .btn-full { width: 100%; }
-    .btn-draw { width: 100%; padding: 18px; font-size: clamp(1rem, 4vw, 1.2rem); background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; border-radius: 14px; border: none; cursor: pointer; font-weight: 800; transition: all 0.2s; min-height: 56px; }
+    /* ── Draw button — no text wrap ── */
+    .btn-draw { width: 100%; padding: 18px; font-size: clamp(1rem, 4vw, 1.2rem); background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; border-radius: 14px; border: none; cursor: pointer; font-weight: 800; transition: all 0.2s; min-height: 56px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .btn-draw:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,58,237,0.4); }
     .btn-draw:active { transform: scale(0.98); }
     .btn-draw:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+    /* ── Inputs ── */
     .input { width: 100%; padding: 12px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 1rem; margin-bottom: 12px; outline: none; transition: border-color 0.15s; min-height: 44px; }
     .input:focus { border-color: var(--accent); }
     .input::placeholder { color: var(--text-muted); }
@@ -76,10 +91,12 @@
     .divider { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.82rem; margin: 14px 0; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
     #view-home { max-width: 420px; margin: 0 auto; }
+    /* ── Game ID hero — responsive, no bleed ── */
     .game-id-hero-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; }
-    .game-id-hero-value { font-family: monospace; font-size: clamp(1.6rem, 8vw, 2.2rem); font-weight: 900; color: var(--free); letter-spacing: 6px; background: var(--surface2); padding: 10px 20px; border-radius: 12px; border: 2px solid var(--border); display: inline-block; }
+    .game-id-hero-value { font-family: monospace; font-size: clamp(1.4rem, 7vw, 2.2rem); font-weight: 900; color: var(--free); letter-spacing: clamp(2px,1.5vw,6px); background: var(--surface2); padding: 10px 16px; border-radius: 12px; border: 2px solid var(--border); display: inline-block; max-width: 100%; word-break: break-all; }
     .copy-link-row { display: flex; gap: 8px; }
     .copy-link-row input { flex: 1; margin-bottom: 0; font-size: 0.78rem; min-height: 44px; }
+    /* ── Ball ── */
     .ball { border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; box-shadow: 0 6px 24px rgba(0,0,0,0.5), inset 0 -3px 10px rgba(0,0,0,0.3), inset 0 3px 10px rgba(255,255,255,0.2); overflow: hidden; }
     .ball.animate { animation: ballDrop 0.55s cubic-bezier(0.34,1.56,0.64,1); }
     @keyframes ballDrop { 0%{transform:translateY(-50px) scale(0.5);opacity:0}100%{transform:translateY(0) scale(1);opacity:1} }
@@ -197,9 +214,12 @@
 
     <div id="view-admin" class="view">
       <div class="top-bar">
-        <div style="display:flex;align-items:center;gap:7px;"><div class="top-bar-dot"></div><span id="admin-game-name-bar">Live</span></div>
+        <div style="display:flex;align-items:center;gap:7px;min-width:0;flex:1;overflow:hidden;">
+          <div class="top-bar-dot"></div>
+          <span id="admin-game-name-bar" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;min-width:0;">Live</span>
+        </div>
         <span class="top-bar-id" id="admin-game-id-bar">—</span>
-        <button class="btn btn-ghost" style="padding:5px 10px;font-size:0.75rem;min-height:32px;" onclick="resetToHome()">Leave</button>
+        <button class="btn btn-ghost" style="padding:5px 10px;font-size:0.75rem;min-height:32px;flex-shrink:0;" onclick="resetToHome()">Leave</button>
       </div>
       <div class="status-banner waiting" id="admin-status-banner">
         <span class="status-banner-icon">👥</span>
@@ -212,7 +232,7 @@
         <div style="margin-top:10px;">
           <div class="copy-link-row" style="justify-content:center;">
             <input class="input" id="share-link-input" type="text" readonly style="max-width:340px;margin-bottom:0;font-size:0.78rem;" />
-            <button class="btn btn-ghost" style="padding:10px 14px;" onclick="copyShareLink()">Copy</button>
+            <button class="btn btn-ghost" style="padding:10px 14px;flex-shrink:0;" onclick="copyShareLink()">Copy</button>
           </div>
         </div>
       </div>
@@ -239,9 +259,12 @@
 
     <div id="view-player" class="view">
       <div class="top-bar">
-        <div style="display:flex;align-items:center;gap:7px;"><div class="top-bar-dot"></div><span id="player-game-name-bar">Connected</span></div>
+        <div style="display:flex;align-items:center;gap:7px;min-width:0;flex:1;overflow:hidden;">
+          <div class="top-bar-dot"></div>
+          <span id="player-game-name-bar" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;min-width:0;">Connected</span>
+        </div>
         <span class="top-bar-id" id="player-game-id-bar">—</span>
-        <button class="btn btn-ghost" style="padding:5px 10px;font-size:0.75rem;min-height:32px;" onclick="resetToHome()">Leave</button>
+        <button class="btn btn-ghost" style="padding:5px 10px;font-size:0.75rem;min-height:32px;flex-shrink:0;" onclick="resetToHome()">Leave</button>
       </div>
       <div class="status-banner waiting" id="player-status-banner">
         <span class="status-banner-icon">⏳</span>
@@ -252,7 +275,7 @@
           <div class="player-name-display" id="player-name-display">Player</div>
           <div class="game-id-badge" id="player-game-id-badge"></div>
         </div>
-        <div style="overflow:visible;">
+        <div style="overflow:visible;flex-shrink:0;">
           <div class="last-drawn-label">Last Drawn</div>
           <div id="player-ball-container" style="margin-top:5px;overflow:visible;"><div class="ball-empty" style="width:58px;height:58px;font-size:0.65rem;">—</div></div>
         </div>
