@@ -10,9 +10,12 @@ function generateId(length = 6) {
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method Not Allowed" };
+  let body = {};
+  try { if (event.body) body = JSON.parse(event.body); } catch {}
   const gameId = generateId(6);
   const adminKey = generateId(12);
-  const gameState = { gameId, adminKey, drawnNumbers: [], players: {}, winner: null, createdAt: Date.now(), status: "waiting" };
+  const gameName = (body.gameName || "").trim().slice(0, 40) || null;
+  const gameState = { gameId, adminKey, gameName, drawnNumbers: [], players: {}, winner: null, winners: [], createdAt: Date.now(), status: "waiting" };
   await redis.set(`game:${gameId}`, JSON.stringify(gameState), { ex: 86400 });
-  return { statusCode: 200, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ gameId, adminKey }) };
+  return { statusCode: 200, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ gameId, adminKey, gameName }) };
 };
